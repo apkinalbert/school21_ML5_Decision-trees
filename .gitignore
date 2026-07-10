@@ -53,3 +53,4 @@ dkms.conf
 venv/
 data/
 __pycache__/
+catboost_info/
