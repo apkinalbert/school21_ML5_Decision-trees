@@ -290,21 +290,22 @@ class my_ExtraTreeClassifier(my_DecisionTreeClassifier):
 
 
 class my_ExtraTreesClassifier:
-    def __init__(self, n_estimators=25, max_features='sqrt', max_depth=5, n_times=30, random_state=21):
+    def __init__(self, n_estimators=25, max_depth=5, n_times=30, random_state=21):
         self.n_estimators = n_estimators
-        self.max_features = max_features
         self.max_depth = max_depth
         self.n_times = n_times
         self.rng = np.random.default_rng(seed=random_state)
-        self.trees = [my_ExtraTreeClassifier(max_depth=self.max_depth, n_times=self.n_times, random_state=self.rng.integers(1, 1_000_000)) for _ in self.n_estimators]
+        self.trees = [my_ExtraTreeClassifier(max_depth=self.max_depth, n_times=self.n_times, random_state=self.rng.integers(1, 1_000_000)) for _ in range(self.n_estimators)]
 
 
     def fit(self, X, y):
         X = np.asarray(X)
         y = np.asarray(y)
 
+        self.classes_ = np.unique(y)
+
         for i in range(self.n_estimators):
-            self.trees[i].fit(X, y)
+            self.trees[i].fit(X, y, self.classes_)
 
         return self
     
